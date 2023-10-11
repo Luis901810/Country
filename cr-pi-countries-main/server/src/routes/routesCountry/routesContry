@@ -1,7 +1,7 @@
 const { Router } = require ("express");
-const handlerAllCountry = require("../../handlers/handlerAllCountry");
-const handlerCountryByName = require("../../handlers/handlerCountryByName")
-const  handlerCountryDetail = require("../../handlers/handlerCountryDetail")
+const handlerAllCountry = require("../../handlers/handlerCountry/handlerAllCountry");
+const handlerCountryByName = require("../../handlers/handlerCountry/handlerCountryByName")
+const  handlerCountryDetail = require("../../handlers/handlerCountry/handlerCountryDetail")
 
 
 const countriesRouter = Router();

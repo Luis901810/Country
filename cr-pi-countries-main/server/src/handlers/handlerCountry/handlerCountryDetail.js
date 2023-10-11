@@ -1,4 +1,4 @@
-const getCountryDetail = require("../controllers/controllersCountry/getCountryDetail");
+const getCountryDetail = require("../../controllers/controllersCountry/getCountryDetail");
 
 
 const handlerCountryDetail = async(req, res) =>{
