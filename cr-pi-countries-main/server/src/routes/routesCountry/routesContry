@@ -1,0 +1,21 @@
+const { Router } = require ("express");
+const handlerAllCountry = require("../../handlers/handlerAllCountry");
+const handlerCountryByName = require("../../handlers/handlerCountryByName")
+const  handlerCountryDetail = require("../../handlers/handlerCountryDetail")
+
+
+const countriesRouter = Router();
+
+countriesRouter.get("/", (req, res) =>{
+    const { name } = req.query;
+if(name){
+    return handlerCountryByName(req, res) 
+}else{
+    return handlerAllCountry(req, res)
+}})
+
+countriesRouter.get("/detail/:id",  handlerCountryDetail)
+
+module.exports = countriesRouter;
+
+
