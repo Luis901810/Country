@@ -17,6 +17,18 @@ const getAllCountry = async () =>{
 
             const {id, name, flag, continent, capital, subregion,area,  population}= data;
         try{
+            const existingCountry = await Country.findOne({
+                where:{
+                    id: id
+                }
+            });
+
+            if(existingCountry){
+
+                return existingCountry
+            }else{
+
+          
             let country = await  Country.create({
                 id,
                 name, 
@@ -36,6 +48,7 @@ const getAllCountry = async () =>{
             return null;
             }
             return country
+        }
         } catch (error) {
             console.error("error al crear el pais", error);
             return null;
@@ -45,7 +58,7 @@ const getAllCountry = async () =>{
       
         const savedCountry = await Promise.all(savedCountryPromise);
        
-        return [ ...resDB, ...savedCountry ]
+        return [...savedCountry, ...resDB ]
         
       
     }catch (error) {

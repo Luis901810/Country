@@ -1,16 +1,14 @@
 
-const { Country, Activity, CountryActivity } = require("../../db")
+const { Country, Activity} = require("../../db")
 
 
 const getCountryByDetail = async(id) =>{
-
-    
 
     try{
 
         const response = await Country.findByPk(id,{
             include:{
-                model: Activity, through: CountryActivity
+                model: Activity,
                
             }
         })

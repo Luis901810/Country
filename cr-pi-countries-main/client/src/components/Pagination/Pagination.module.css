@@ -1,0 +1,57 @@
+
+.conteiner{
+    display: flex;
+    justify-content: center;
+    list-style: none;
+  }
+  
+  .btnPage {
+    padding: 8px 12px;
+    margin: 0 4px;
+    background-color: #579ae2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btnPage:hover{
+    transform: scale3d(1.5, 1.5, 0.3);
+        -webkit-transform: scale3d(1.5, 1.5, 0.3);
+        -moz-transform: scale3d(1.5, 1.5, 0.3);
+}
+  
+  .btnPageActive  {
+    padding: 8px 12px;
+    margin: 0 4px;
+    background-color: #fff;
+    color: #46678a;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btnPageActive:hover {
+    background-color: #fff; 
+    color: #c3d8c7;
+    border-color: #5adb4c; 
+     cursor: pointer;
+  }
+  
+  .atrasAdelante,
+  .atrasAdelanteDesactive  {
+    padding: 8px 12px;
+    margin: 0 4px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .atrasAdelanteDesactive  {
+    pointer-events: none; 
+    background-color: #ccc;
+    color: #888;
+  }
+  
