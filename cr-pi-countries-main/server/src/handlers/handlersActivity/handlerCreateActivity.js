@@ -2,9 +2,9 @@
 
 const { Activity, Country } = require("../../db")
 
-const handlersActivityAll = async({name, difficulty, duration, season, CountryId})=>{
+const handlersActivityAll = async({name, difficulty, duration, season,  Countries})=>{
     try {
-        if(!name || !difficulty || !duration || !season || !CountryId){
+        if(!name || !difficulty || !duration || !season || ! Countries){
 
             throw new Error("faltan datos ")
         }
@@ -26,7 +26,7 @@ const handlersActivityAll = async({name, difficulty, duration, season, CountryId
         });
         const countriesFound = await Country.findAll({
             where:{
-                id: CountryId
+                id:  Countries
             }
         })
 

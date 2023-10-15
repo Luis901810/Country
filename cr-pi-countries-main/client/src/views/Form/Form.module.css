@@ -1,0 +1,50 @@
+.container{
+    margin: 0px;
+    background: url('../../Assents/crear.jpg') no-repeat;
+    background-size: cover;
+    
+    justify-content:space-evenly;
+    height: 100vh;
+    flex-wrap: wrap;
+    display: flex;
+
+}
+/* ------------   SECTION  ------------ */
+.section1{
+    width: 1500px;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  
+}
+
+.title{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    letter-spacing: 1px;
+    color:chocolate;
+    -webkit-text-stroke: 0.5px rgb(255, 255, 255);
+    text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.581);
+    font-size: 40px;
+}
+
+.btn_home{
+    width: 70px;
+    height: 70px;
+    border-radius:20px;
+    color: #060606;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  
+ 
+}
+.btn_home:hover{
+    background: #ffffffa8;
+    transform: scale(1.1);
+    border: solid rgba(255, 254, 254, 0.807);
+    box-shadow: 0 0 10px #2a2c2c9b, 0 0 10px #2a2c2c9b, 0 0 10px #2a2c2c9b;
+}

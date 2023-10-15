@@ -2,12 +2,12 @@ const handlersActivityAll = require("../../handlers/handlersActivity/handlerCrea
 
 const getActivityCreate = async (req, res) =>{
 
-    const {  name, difficulty, duration, season, CountryId} = req.body;
+    const {  name, difficulty, duration, season, Countries} = req.body;
 
 
     try {
         
-        const response = await handlersActivityAll({name, difficulty, duration, season, CountryId })
+        const response = await handlersActivityAll({name, difficulty, duration, season, Countries})
         
         
        return  res.status(200).json(response)

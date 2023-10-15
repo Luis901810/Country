@@ -9,9 +9,10 @@ import { getAllCountry } from "../../redux/actions";
 // componentes functional
 
 import Cards from "../../components/Cards/Cards";
-//import Navbar from "../../components/Navbar/Navbar";
+import NavBar from "../../components/Navbar/Navbar";
 import Pagination from "../../components/Pagination/Pagination"
 import Loading from "../../components/Loading/Loading";
+import styles from "./Home.module.css"
 
 const Home = () =>{
 
@@ -19,7 +20,7 @@ const Home = () =>{
     const allCountry = useSelector((state) => state.allCountry);
     
     const [ currentIndex, setCurrentIndex ] = useState(0);
-    const [order, setOrder ] = useState("")
+    //const [order, setOrder ] = useState("")
     const [ currentPage, setCurrentPage] = useState(1)
     const countryPerPage = 10;
 
@@ -29,11 +30,8 @@ const Home = () =>{
     const countryMatchingFilter = allCountry.filter((country) => country )
     const currentcountry = countryMatchingFilter.slice(indexOfFirstCountry, indexOfLastCountry)
     
-    // function para cambiar a pagina actual
-    const handlerPageChange = (pageNumber) =>{
-        setCurrentPage(pageNumber.selected + 1);
-    }
-    
+
+  
     
     useEffect(() =>{
         dispatch(getAllCountry())
@@ -41,8 +39,10 @@ const Home = () =>{
 
 
     return(
-        <div>
-            <h1>soy el home</h1>
+        <div className={styles.container}>
+           <div>
+            <NavBar setCurrentPage={setCurrentPage } setCurrentIndex ={setCurrentIndex }/>
+           </div>
 
             <div>
             { allCountry.length ?(

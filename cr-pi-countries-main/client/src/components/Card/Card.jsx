@@ -6,13 +6,19 @@ function Card ({country}){
     const { id, flag, name, continent } = country
 
     return(
-        <div className = {styles.Container}>
+        <div>
+            <div className = {styles.container}>
+
             <Link to = {`/home/detail/${id}`}>
-                <img src={flag} alt={name}/>
-                <h3>{name}</h3>
-                <h3>{continent}</h3>
+                <img className= {styles.image_card} src={flag} alt={name}/>
             </Link>
+
+                <h3 className={styles.name}>{name}</h3>
+                <h3 className={styles.continent}>{continent}</h3>
+            </div>
+
         </div>
+        
     )
 }
 export default Card;
