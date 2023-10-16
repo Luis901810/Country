@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, URLCOUNTRYS} from "./actions-types";
+import { GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, URLCOUNTRYS, ADD_ACTIVITY, URLACTIVITY, RESET_DETAIL_COUNTRY} from "./actions-types";
 
 export const getAllCountry = () =>{
     
@@ -42,8 +42,26 @@ export const getByName = (name) =>{
         }
     }
 }
-// export const addActivity (dispatch){
+export const addActivity = (input) =>{
+     return async (dispatch) =>{
+        try {
+            const { data } = await  axios.post(`${URLACTIVITY}`, input)
+            return dispatch({
+                type:ADD_ACTIVITY,
+                payload: data
 
-//     const response = await  axios.post()
-//     type:ADD_ACTIVITY,
-// }
+            }) 
+        } catch (error) {
+
+            toast.error(`Error al Crear la Actividad:` + error.message)
+          
+        }
+     } 
+}
+
+export const resetCountryDetail = ()=>{
+    return{
+
+        type : RESET_DETAIL_COUNTRY,
+    }
+}
