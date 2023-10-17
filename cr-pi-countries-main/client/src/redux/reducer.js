@@ -1,11 +1,11 @@
-import { ADD_ACTIVITY, GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, RESET_DETAIL_COUNTRY} from "./actions-types";
+import { ADD_ACTIVITY, GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, RESET_DETAIL_COUNTRY, DETAIL_COUNTRY, LOADING} from "./actions-types";
 
 
 const initialState={
     allCountry:[],
     allCountryCopy:[],
     detailCountry: null,
-    addActivity: [],
+    allActivity: [],
     loading : true,
 }
 
@@ -30,6 +30,12 @@ function reducer(state=initialState, action){
                 loading: false,
 
             }
+        case DETAIL_COUNTRY:
+            return {
+                ...state,
+                detailCountry:action.payload,
+                loading: false,
+            }
         case RESET_DETAIL_COUNTRY:
             return{
                 ...state,
@@ -39,11 +45,16 @@ function reducer(state=initialState, action){
             
         return{
             ...state,
-            addActivity:[
+            allActivity:[
                 ...state.addActivity,
                 action.payload
             ]
         };
+        case LOADING:
+            return{
+                ...state,
+                loading:action.payload
+            }
 
 
 

@@ -16,6 +16,6 @@ if(name){
 
 countriesRouter.get("/detail/:id",  handlerCountryDetail)
 
-module.exports = countriesRouter;
+module.exports = countriesRouter; 
 
 

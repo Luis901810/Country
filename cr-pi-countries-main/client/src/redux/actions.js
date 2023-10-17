@@ -2,13 +2,21 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, URLCOUNTRYS, ADD_ACTIVITY, URLACTIVITY, RESET_DETAIL_COUNTRY} from "./actions-types";
+import { GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, DETAIL_COUNTRY, URLCOUNTRYS,URLDETAIL, ADD_ACTIVITY, URLACTIVITY, RESET_DETAIL_COUNTRY, LOADING} from "./actions-types";
 
+export const loading = (stateLoading) =>{
+    return{
+        type:LOADING,
+        payload: stateLoading
+    }
+}
+
+// buscar a todos 
 export const getAllCountry = () =>{
     
         return async function (dispatch){
         try{
-
+        dispatch(loading(true))
         const response = await axios(`${URLCOUNTRYS}`);
         return dispatch({
             type: GET_ALL_COUNTRY,
@@ -16,15 +24,21 @@ export const getAllCountry = () =>{
         })
 
         }catch (error){
-            toast.error("Error al cargar a todos los países: " + error.message);
 
+            toast.error("Error al cargar a todos los países: " + error.message);
+        }finally{
+            dispatch(loading(false))
         }
     }
 }
 
+// buscar por nombre
+
 export const getByName = (name) =>{
     return async function ( dispatch){
+
         try{
+            dispatch(loading(true))
 
         if(!name || !isNaN(name) || !name.length){
             return
@@ -39,9 +53,14 @@ export const getByName = (name) =>{
         }catch(error){
             toast.error("Error al buscar países: " + error.message);
 
+        }finally{
+            dispatch(loading(false))
         }
     }
 }
+
+// agregar actividad
+
 export const addActivity = (input) =>{
      return async (dispatch) =>{
         try {
@@ -56,8 +75,32 @@ export const addActivity = (input) =>{
             toast.error(`Error al Crear la Actividad:` + error.message)
           
         }
+        finally{
+            dispatch(loading(false))
+        }
      } 
 }
+// buscar por id 
+export const getdetailCountry = (id) =>{
+
+    return async (dispatch)=>{
+        try{
+            dispatch(loading(true))
+            const response = await axios(`${URLDETAIL}/${id}`)
+            return dispatch({
+                type: DETAIL_COUNTRY,
+                payload: response.data
+            })
+
+        }catch (error) {
+            toast.error("Error al mostrar el detalle: " + error.message);
+        }
+        finally{
+            dispatch(loading(false))
+        }
+    } 
+}
+// limpiar detalle
 
 export const resetCountryDetail = ()=>{
     return{

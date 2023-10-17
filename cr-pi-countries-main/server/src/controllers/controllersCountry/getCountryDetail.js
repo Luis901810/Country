@@ -9,6 +9,11 @@ const getCountryByDetail = async(id) =>{
         const response = await Country.findByPk(id,{
             include:{
                 model: Activity,
+                attributes:["name",  "difficulty", "duration", "season" ],
+                through:{
+                    attributes:[]
+
+                }
                
             }
         })
