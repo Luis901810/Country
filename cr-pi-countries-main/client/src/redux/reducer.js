@@ -46,7 +46,7 @@ function reducer(state=initialState, action){
         return{
             ...state,
             allActivity:[
-                ...state.addActivity,
+                ...state.allActivity,
                 action.payload
             ]
         };

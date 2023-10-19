@@ -3,16 +3,24 @@ import {useDispatch, useSelector } from "react-redux";
 import { useEffect, useState }  from "react";
 import { addActivity, getAllCountry } from "../../redux/actions"
 import styles from "./Form.module.css";
+import { validateCountryId, validateDifficulty, validateDuration, validateName, validateSeason  } from "../../util/Validate/validate";
 
 
 const Form = () =>{
 
     const dispatch= useDispatch();
-    const addActivities = useSelector((state) => state.allActivity)
     const allCountry = useSelector((state) => state.allCountry)
+    const [countries, setCountries] = useState([]);
+    console.log("soy los countries guardados",countries)
+
+
+    
+    useEffect(()=>{
+        dispatch(getAllCountry())
+    },[dispatch]);
 
     const [ input, setInput ] = useState({
-        name: "",
+        name:"",
         difficulty:"",
         duration:"",
         season:"",
@@ -32,45 +40,63 @@ const Form = () =>{
     })
    
    
-    const handleChange =(event) =>{
-        const {name, value, type } = event.target;
-
-        if(type === "select-multiples"){
-
-            const selectedOptions = Array.from(event.target.selectedOptions).map(
-                (option) => option.value
-            );
+    const handleChange = (event) => {
         
-        setInput({
-            ...input,
-            [name]: selectedOptions,
-        });
-        } else {
+        if (event.target.name === "CountryId") {
 
-        setError({
-            ...error,
-            [name]: value
-        });
-        setError(validate({...error, 
-        [name]: value}));
-    }
-};
+          const selectedOptions = Array.from(event.target.selectedOptions).map((option) => option.value);
+          setCountries(selectedOptions);
+        } else {
+          setInput({
+            ...input,
+            [event.target.name]: event.target.value,
+          });
+        }
+        setError(validate({
+          ...input,
+          [event.target.name]: event.target.value,
+        }));
+      };
+      
+
+     
+      
+      
+
+        const validate = (input) =>{
+            const inputError = {}
+                inputError.name= validateName(input.name);
+                inputError.difficulty = validateDifficulty(input.difficulty);
+                inputError.season = validateSeason(input.season);
+                inputError.duration = validateDuration(input.duration);
+                inputError.CountryId = validateCountryId(input.CountryId)
+                return inputError
+
+        }
+      
    
     const handleSubmit = async (event) =>{
 
         event.preventDefault();
 
-        const datos = Object.values(error)
+        const hasError = Object.values(error).some((errorMsg) => errorMsg !== "");
 
-        if(datos.some((error) => error !== "")){
-            setError(error);
-            alert("faltan Completar los datos Requeridos")
+        if(hasError){
+            const missingFields = [];
+
+            for(const field in error){
+                if(error[field] !== ""){
+                   missingFields.push(field)
+                }
+            }
+            alert(`faltan Completar los siguientes campos ${missingFields.join(",")}`)
+           
         }else{
             dispatch(addActivity(input))
             setInput({
                 name: "",
-                difficulty: 0,
-                duration: 0,
+                difficulty: "",
+                duration: "",
                 season:"",
                 CountryId: [],
             })
@@ -91,14 +117,9 @@ const Form = () =>{
         }
     }
 
-    const validate = (input) =>{
+ 
 
-    }
-
-    useEffect(()=>{
-        dispatch(getAllCountry())
-    },[dispatch])
-
+    
     
 
     return(
@@ -122,6 +143,7 @@ const Form = () =>{
                     <div>
                         <label>Nombre:</label>
                         <input placeholder=" Nombre" type="text" name="name" value={input.name} onChange={handleChange}/>
+                        {error.name && <p style={{fontWeight:'bold',fontSize: '12px',lineHeight: '0.1em',color:'red'}}>{error.name}</p>}
                     </div>
 
                 </section>
@@ -130,40 +152,79 @@ const Form = () =>{
                     <div>
                         <label>Dificultad</label>
                         <select name = "difficulty" value= {input.difficulty} onChange= {handleChange}>
+                            <option>0</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
                         </select>
+                        {error.difficulty && <p style={{fontWeight:'bold',fontSize: '12px',lineHeight: '0.1em',color:'red'}}>{error.difficulty}</p>}
                     </div>
                 </section>
 
                 <section>
                     <select id="season" name="season" value={input.season} onChange={handleChange}>
-            
+                        <option>todos</option>
                         <option>Verano</option>
                         <option>Otoño</option>
                         <option>Invierno</option>
                         <option>Primavera</option>
 
                     </select>
+                    {error.season && <p style={{fontWeight:'bold',fontSize: '12px',lineHeight: '0.1em',color:'red'}}>{error.season}</p>}
+
+                </section>
+                <section>
+                    <div>
+                        <label>Duracion</label>
+                        <input type="number" placeholder="duracion" name="duration" value={input.duration} onChange={handleChange}/>
+                        {error.duration && <p style={{fontWeight:'bold',fontSize: '12px',lineHeight: '0.1em',color:'red'}}>{error.duration}</p>}
+                    </div>
+                   
+                </section>
+
+                <section>
+
+                <select multiple name="CountryId" value={countries} onChange={handleChange}>
+                 {allCountry?.map((country, index) => (
+                    <option key={index} value={country.id}>
+                    {country.name}
+                     </option>
+                    ))}
+                </select>
+
+
+                    {error.CountryId &&(
+                         <p style={{ fontWeight: 'bold', fontSize: '12px', lineHeight: '0.1em', color: 'red' }}>
+                            {error.CountryId}
+                        </p>
+                        
+                    )}
 
                 </section>
 
                 <section>
-                    <select multiple name="CountryId" value={input.CountryId} onChange={handleChange}>
-                        {
-                            allCountry?.map((country, index) =>(
-                            <option key={index} value={country.id}>{country.name}</option>))
-                        }
+                    {countries.length > 0 &&(
+                         <div>
+                         <h2>Países seleccionados:</h2>
+                         <ul>
+                           {Array.isArray(countries) && countries.map((countryId, index) => (
+                             <li key={index}>{allCountry.filter((country) => country.id === countryId)?.name}</li>
+                           ))}
+                         </ul>
+                       </div>
 
-                    </select>
+                    )}
+               
+
+                </section>
+                
 
                     <div>
                         <button type="submit">crear</button>
                     </div>
 
-                </section>  
+               
 
                 </section>
 
