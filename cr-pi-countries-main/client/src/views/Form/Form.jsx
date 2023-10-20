@@ -10,8 +10,7 @@ const Form = () =>{
 
     const dispatch= useDispatch();
     const allCountry = useSelector((state) => state.allCountry)
-    const [countries, setCountries] = useState([]);
-    console.log("soy los countries guardados",countries)
+   
 
 
     
@@ -41,27 +40,32 @@ const Form = () =>{
    
    
     const handleChange = (event) => {
-        
-        if (event.target.name === "CountryId") {
-
-          const selectedOptions = Array.from(event.target.selectedOptions).map((option) => option.value);
-          setCountries(selectedOptions);
+        const { name, value, type, options } = event.target;
+      
+        if (name === "CountryId") {
+          const selectedOptions = Array.from(options)
+            .filter((option) => option.selected)
+            .map((option) => parseInt(option.value));
+      
+          setInput({
+            ...input,
+            [name]: selectedOptions,
+          });
         } else {
           setInput({
             ...input,
-            [event.target.name]: event.target.value,
+            [name]: type === "number" ? parseFloat(value) : value,
           });
         }
+      
         setError(validate({
           ...input,
-          [event.target.name]: event.target.value,
+          [name]: value,
         }));
       };
       
-
-     
       
-      
+ 
 
         const validate = (input) =>{
             const inputError = {}
@@ -164,7 +168,7 @@ const Form = () =>{
 
                 <section>
                     <select id="season" name="season" value={input.season} onChange={handleChange}>
-                        <option>todos</option>
+                        <option>Temporada</option>
                         <option>Verano</option>
                         <option>Otoño</option>
                         <option>Invierno</option>
@@ -185,7 +189,7 @@ const Form = () =>{
 
                 <section>
 
-                <select multiple name="CountryId" value={countries} onChange={handleChange}>
+                <select multiple name="CountryId" value={input.CountryId} onChange={handleChange}>
                  {allCountry?.map((country, index) => (
                     <option key={index} value={country.id}>
                     {country.name}
@@ -204,12 +208,13 @@ const Form = () =>{
                 </section>
 
                 <section>
-                    {countries.length > 0 &&(
+                    {input.CountryId.length > 0 &&(
                          <div>
                          <h2>Países seleccionados:</h2>
                          <ul>
-                           {Array.isArray(countries) && countries.map((countryId, index) => (
-                             <li key={index}>{allCountry.filter((country) => country.id === countryId)?.name}</li>
+                           {input.CountryId.map((countryId, index) => (
+                             <li key={index}>
+                                {allCountry.find((country) => country.id === countryId)?.name}</li>
                            ))}
                          </ul>
                        </div>

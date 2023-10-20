@@ -5,6 +5,7 @@ export const validateName = (name) =>{
     }else if(namer.test(name)){
         return "El nombre no puede tener Numero";
     }
+    return "";
 }
 
 export const validateDifficulty = (difficulty) =>{
@@ -16,6 +17,7 @@ export const validateDifficulty = (difficulty) =>{
     }else if(isNaN(difficulty)){
         return "La dificultad debe ser un número."
     }
+    return "";
 }
 
 export const validateDuration =(duration) =>{
@@ -24,12 +26,14 @@ export const validateDuration =(duration) =>{
     } else if(isNaN(duration) || duration <= 0 ){
         return "Debe ingresar una duración Numerica.";
     }
+    return "";
 }
 
 export const validateCountryId = (countries) =>{
     if(!countries ||countries.length === 0){
         return  "Debe Elegir uno o mas Paises";
     }
+    return "";
 }
 
 export const validateSeason = (season) =>{
@@ -38,4 +42,5 @@ export const validateSeason = (season) =>{
     }else if(season !== "Verano" && season !== "Otoño" && season !== "Invierno" && season !== "Primavera" ){
         return "Elija la Temporada Correcta";
     }
+    return "";
 }

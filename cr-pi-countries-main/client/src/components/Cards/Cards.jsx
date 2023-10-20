@@ -2,8 +2,8 @@ import Card from "../Card/Card";
 import styles from "./Cards.module.css";
 
 
-function Cards({allCountry}){
-    const countries = allCountry;
+function Cards({ countries }){
+    
     return (
         <div className={styles.container}>
             {

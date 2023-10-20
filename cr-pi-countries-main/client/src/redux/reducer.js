@@ -1,4 +1,4 @@
-import { ADD_ACTIVITY, GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, RESET_DETAIL_COUNTRY, DETAIL_COUNTRY, LOADING} from "./actions-types";
+import { ADD_ACTIVITY, GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, RESET_DETAIL_COUNTRY, ORDER_BY_CONTINENT, DETAIL_COUNTRY, LOADING, ORDER_BY_NAME} from "./actions-types";
 
 
 const initialState={
@@ -8,6 +8,7 @@ const initialState={
     allActivity: [],
     loading : true,
 }
+
 
 function reducer(state=initialState, action){
 
@@ -27,6 +28,7 @@ function reducer(state=initialState, action){
             return{
                 ...state, 
                 allCountry: action.payload,
+                allCountryCopy: action.payload,
                 loading: false,
 
             }
@@ -41,9 +43,8 @@ function reducer(state=initialState, action){
                 ...state,
                 detailCountry:{},
             }
-        case ADD_ACTIVITY:
-            
-        return{
+        case ADD_ACTIVITY:   
+            return{
             ...state,
             allActivity:[
                 ...state.allActivity,
@@ -55,16 +56,45 @@ function reducer(state=initialState, action){
                 ...state,
                 loading:action.payload
             }
+        case ORDER_BY_NAME:
+            let sortedCountry = [];
+            if(action.payload === "A-Z"){
+                sortedCountry = state.allCountry.slice().sort((a, b) =>{
+                    return a.name.localeCompare(b.name)
+                });
+            }else if( action.payload === "Z-A"){
+                sortedCountry = state.allCountry.slice().sort((a, b) =>{
+                    return b.name.localeCompare(a.name);
+            });
+            }
+            return{
+                ...state,
+                allCountry:sortedCountry
+            }
+        case ORDER_BY_CONTINENT:
 
+            if(action.payload){
+               
+                let continent;
+                if(action.payload === "all"){
+                    continent=state.allCountryCopy;
+                }else{
+                    continent = state.allCountryCopy.filter((country) => country.continent === action.payload )
+                }
+                return{
+                    ...state,
+                    allCountry: continent,
+                };
+            }
+            return state
+           
 
+        default:
 
-        default:{
-          return  state;
-        }
-          
+        return state
+        ;
+    };
 
-    }
-
-}
+};
 
 export default reducer;

@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, DETAIL_COUNTRY, URLCOUNTRYS,URLDETAIL, ADD_ACTIVITY, URLACTIVITY, RESET_DETAIL_COUNTRY, LOADING} from "./actions-types";
+import { GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, DETAIL_COUNTRY, URLCOUNTRYS,URLDETAIL,ORDER_BY_CONTINENT, ADD_ACTIVITY, URLACTIVITY, RESET_DETAIL_COUNTRY, LOADING, ORDER_BY_NAME} from "./actions-types";
 
 export const loading = (stateLoading) =>{
     return{
@@ -106,5 +106,21 @@ export const resetCountryDetail = ()=>{
     return{
 
         type : RESET_DETAIL_COUNTRY,
+    }
+}
+
+export const orderByName = (payload) =>{
+    return {
+        
+            type: ORDER_BY_NAME,   
+            payload: payload
+        
+    }
+}
+
+export const orderByContinent = (payload)=>{
+    return{
+        type:ORDER_BY_CONTINENT ,
+        payload: payload
     }
 }
