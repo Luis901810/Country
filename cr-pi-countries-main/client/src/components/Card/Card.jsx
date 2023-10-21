@@ -4,13 +4,14 @@ import styles from "./Card.module.css"
 
 function Card ({country}){
     const { id, flag, name, continent } = country
+  
 
     return(
         <div>
             <div className = {styles.container}>
 
             <Link to = {`/home/detail/${id}`}>
-                <img className= {styles.image_card} src={flag} alt={name}/>
+                <img className= {styles.image_card} src={flag} alt="bandera del pais"/>
             </Link>
 
                 <h3 className={styles.name}>{name}</h3>

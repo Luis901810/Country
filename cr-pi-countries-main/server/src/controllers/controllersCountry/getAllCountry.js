@@ -1,70 +1,56 @@
-const axios = require ("axios");
-const { Country } = require("../../db")
-const { infCleaner } = require ("../../util/util")
+const axios = require("axios");
+const { Country } = require("../../db");
+const { infCleaner } = require("../../util/util");
 
+const getAllCountry = async () => {
+  try {
+    const resDB = await Country.findAll();
 
+    const resApi = (await axios("http://localhost:5000/countries")).data;
 
-const getAllCountry = async () =>{
+    const infApi = infCleaner(resApi);
 
-    try{
-        const resDB = await Country.findAll();
-                
-        const resApi =(await axios("http://localhost:5000/countries")).data;
+    const savedCountry = [];
+    for (const data of infApi) {
+      const { id, name, flag, continent, capital, subregion, area, population } = data;
+      try {
+        const existingCountry = await Country.findOne({
+          where: {
+            id: id
+          }
+        });
 
-        const infApi = infCleaner(resApi)
+        if (existingCountry) {
+          savedCountry.push(existingCountry);
+        } else {
+          let country = await Country.create({
+            id,
+            name,
+            flag,
+            continent,
+            capital,
+            subregion,
+            area,
+            population,
+            created: false
+          });
 
-        const savedCountryPromise = infApi.map(async (data) =>{
-
-            const {id, name, flag, continent, capital, subregion,area,  population}= data;
-        try{
-            const existingCountry = await Country.findOne({
-                where:{
-                    id: id
-                }
-            });
-
-            if(existingCountry){
-
-                return existingCountry
-            }else{
-
-          
-            let country = await  Country.create({
-                id,
-                name, 
-                flag,
-                continent,
-                capital,
-                subregion,
-                area,
-                population,
-                created: false,
-               
-            
-            });
-                       
-            if(!country){
-                console.log("no se pudo crear los paises en la base de datos", country)
+          if (!country) {
+            console.log("No se pudo crear los países en la base de datos", country);
             return null;
-            }
-            return country
+          }
+          savedCountry.push(country);
         }
-        } catch (error) {
-            console.error("error al crear el pais", error);
-            return null;
-        }
-    });
-     
-      
-        const savedCountry = await Promise.all(savedCountryPromise);
-       
-        return [...savedCountry, ...resDB ]
-        
-      
-    }catch (error) {
-        throw error;
-        
-
+      } catch (error) {
+        console.error("Error al crear el país", error);
+        return null;
+      }
     }
-}
+
+    return [ ...resDB];
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = getAllCountry;

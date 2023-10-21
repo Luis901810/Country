@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, DETAIL_COUNTRY, URLCOUNTRYS,URLDETAIL,ORDER_BY_CONTINENT, ADD_ACTIVITY, URLACTIVITY, RESET_DETAIL_COUNTRY, LOADING, ORDER_BY_NAME} from "./actions-types";
+import { GET_ALL_COUNTRY, GET_BY_NAME_COUNTRY, DETAIL_COUNTRY,ORDER_BY_POPULATION, URLCOUNTRYS,URLDETAIL, FILTER_BY_CONTINENT, FILTER_BY_ACTIVITIES, ADD_ACTIVITY, URLACTIVITY, RESET_DETAIL_COUNTRY, LOADING, ORDER_BY_NAME} from "./actions-types";
 
 export const loading = (stateLoading) =>{
     return{
@@ -17,7 +17,7 @@ export const getAllCountry = () =>{
         return async function (dispatch){
         try{
         dispatch(loading(true))
-        const response = await axios(`${URLCOUNTRYS}`);
+        const response = await axios(`${URLCOUNTRYS}`)
         return dispatch({
             type: GET_ALL_COUNTRY,
             payload:response.data
@@ -109,18 +109,34 @@ export const resetCountryDetail = ()=>{
     }
 }
 
-export const orderByName = (payload) =>{
+export const orderByName = (order) =>{
     return {
         
             type: ORDER_BY_NAME,   
-            payload: payload
+            payload: order
         
+    }
+}
+
+export const sortByPopulation = (order) =>{
+
+    return{
+        type: ORDER_BY_POPULATION,
+        payload: order
     }
 }
 
 export const orderByContinent = (payload)=>{
     return{
-        type:ORDER_BY_CONTINENT ,
+            type:FILTER_BY_CONTINENT,
+            payload: payload
+    }
+    
+}
+export const filterByActivities = (payload) =>{
+    return{
+        type: FILTER_BY_ACTIVITIES,
         payload: payload
+
     }
 }
